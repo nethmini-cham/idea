@@ -8,14 +8,21 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to top, #4b0082, #2f004e);
+      background: linear-gradient(45deg, #4b0082, #2f004e);
       color: white;
       height: 100vh;
       overflow-x: hidden;
       position: relative;
+      animation: bgPulse 8s ease-in-out infinite alternate;
+      background-size: 400% 400%;
     }
 
-    /* Countdown & Pit stop styling */
+    @keyframes bgPulse {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     .countdown {
       position: fixed;
       top: 20px;
@@ -40,6 +47,7 @@
       color: #0d3c12;
       box-shadow: 0 0 18px #3ba54dcc;
     }
+
     .pit-stop-btn {
       position: fixed;
       top: 20px;
@@ -65,41 +73,40 @@
       outline: none;
     }
 
-    /* Love note container */
     .love-note {
       position: fixed;
-      bottom: -400px;
-      right: 20px;
-      width: 340px;
-      max-width: 95vw;
+      bottom: -420px;
+      right: 5vw;
+      width: 90vw;
+      max-width: 380px;
       background: #fff0f5;
       color: #333;
-      padding: 28px 30px 34px 30px;
+      padding: 28px 26px 34px 26px;
       border-radius: 22px;
       box-shadow: 0 14px 40px rgba(255, 102, 204, 0.95);
       z-index: 40;
-      font-size: 17px;
-      line-height: 1.7;
+      font-size: 18px;
+      line-height: 1.8;
       user-select: none;
       opacity: 0;
       transform: translateY(60px);
       transition: bottom 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, transform 0.6s ease;
       overflow-wrap: break-word;
+      box-sizing: border-box;
     }
-
     .love-note.show {
-      bottom: 90px;
+      bottom: 80px;
       opacity: 1;
       transform: translateY(0);
     }
 
     .close-btn {
       position: absolute;
-      top: 14px;
-      right: 16px;
+      top: 16px;
+      right: 18px;
       background: none;
       border: none;
-      font-size: 24px;
+      font-size: 28px;
       color: #666;
       cursor: pointer;
       font-weight: 700;
@@ -112,11 +119,10 @@
       outline: none;
     }
 
-    /* Pulse heart animation behind love note */
     .love-note::before {
       content: "💖";
       position: absolute;
-      font-size: 58px;
+      font-size: 62px;
       color: #ff66ccbb;
       top: 14px;
       left: 14px;
@@ -137,10 +143,9 @@
       }
     }
 
-    /* Floating flower/heart animations */
     .floating-emoji {
       position: fixed;
-      font-size: 22px;
+      font-size: 24px;
       animation: floatUp linear forwards;
       pointer-events: none;
       user-select: none;
@@ -159,73 +164,47 @@
       }
     }
 
-    /* Responsive tweaks */
     @media screen and (max-width: 600px) {
       .love-note {
-        width: 95vw;
+        width: 95vw; /* almost full screen width */
         right: 2.5vw;
-        font-size: 16px;
-        padding: 24px 26px 28px 26px;
-        bottom: -400px;
+        bottom: 70px;
+        font-size: 18px;       /* slightly bigger for readability */
+        line-height: 1.9;      /* better spacing */
+        padding: 28px 20px 34px 20px; /* less horizontal padding */
+        max-width: none;       /* remove max-width to fill width */
+        border-radius: 18px;   /* keep rounding */
       }
       .love-note.show {
-        bottom: 80px;
+        bottom: 70px;
+      }
+      .close-btn {
+        top: 12px;
+        right: 12px;
+        font-size: 32px;        /* bigger close icon */
+        padding: 6px 10px;      /* easier tap target */
       }
       .pit-stop-btn {
-        top: auto;
         bottom: 20px;
+        top: auto;
         right: 20px;
+        padding: 14px 26px;    /* bigger button on mobile */
+        font-size: 18px;
       }
       .countdown {
         top: 20px;
         left: 20px;
-        max-width: 85vw;
-        font-size: 15px;
-      }
-    }
-
-    /* Car container animation */
-    #car-container {
-      position: fixed;
-      bottom: 140px;
-      left: -150px;
-      width: 140px;
-      height: 80px;
-      z-index: 10;
-      pointer-events: none;
-      user-select: none;
-      animation: driveCar 12s linear infinite;
-    }
-
-    @keyframes driveCar {
-      0% {
-        left: -160px;
-        transform: rotate(0deg);
-        opacity: 1;
-      }
-      10% {
-        left: 10vw;
-        transform: rotate(5deg);
-      }
-      40% {
-        left: 40vw;
-        transform: rotate(-3deg);
-      }
-      70% {
-        left: 70vw;
-        transform: rotate(3deg);
-      }
-      100% {
-        left: 110vw;
-        transform: rotate(0deg);
-        opacity: 1;
+        max-width: 90vw;
+        font-size: 16px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="countdown" id="countdown" aria-live="polite" aria-atomic="true">⏳ Calculating time left...</div>
+  <div class="countdown" id="countdown" aria-live="polite" aria-atomic="true">
+    ⏳ Calculating time left...
+  </div>
 
   <button class="pit-stop-btn" onclick="toggleLoveNote()" aria-expanded="false" aria-controls="loveNote">
     Pit Stop 💖
@@ -238,10 +217,6 @@
     </div>
     <div id="loveNoteText"></div>
   </div>
-
-  <div id="car-container"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
     const loveNote = document.getElementById('loveNote');
@@ -258,13 +233,18 @@
         createFloatingEmojis();
       } else {
         loveNoteText.textContent = "";
+        clearInterval(typingTimer); // stop typing if closed early
       }
     }
 
     // Typing effect for love note text
-    const message = `I never saw you as a bad boyfriend, you are good and try to become a better boyfriend every day.
+    const message = `I'm so proud of you, you are working so hard to achieve future goals. But it's unfair to struggle alone.
+I want to be there for you, to support you, to cheer you on. I know you can do this, and I will be right here, every step of the way.
+You are my favorite co-driver.
+I am here for you, cheering you on, ready to help in any way I can.
 
-You are perfect for me. 💖`;
+You are perfect for me. 💖
+I love you so much, and I believe in you with all my heart.`;
 
     let typingIndex = 0;
     let typingTimer;
@@ -280,10 +260,10 @@ You are perfect for me. 💖`;
         } else {
           clearInterval(typingTimer);
         }
-      }, 45);
+      }, 40);
     }
 
-    // Countdown Timer to July 29 12:00 AM, 2025 UTC
+    // Countdown Timer to July 29 2025 00:00:00 UTC
     const targetDate = new Date("2025-07-29T00:00:00Z");
 
     function updateCountdown() {
@@ -302,37 +282,26 @@ You are perfect for me. 💖`;
       const secs = Math.floor((diff / 1000) % 60);
 
       countdownEl.textContent = `⏳ Assignment ends in: ${days}d ${hours}h ${mins}m ${secs}s`;
-      countdownEl.classList.remove('done');
     }
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Load Lottie car animation
-    const carContainer = document.getElementById('car-container');
-    const carAnimation = lottie.loadAnimation({
-      container: carContainer,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: 'https://assets10.lottiefiles.com/packages/lf20_touohxv0.json' // Car animation JSON
-    });
-
-    // Floating emojis for love note
+    // Floating hearts animation for stress relief
     function createFloatingEmojis() {
-      const emojis = ['🌸','💖','🌺','💕','🌷'];
-      for(let i=0; i < 15; i++) {
+      for (let i = 0; i < 12; i++) {
         const emoji = document.createElement('div');
         emoji.classList.add('floating-emoji');
-        emoji.style.left = (Math.random() * 90 + 5) + 'vw';
-        emoji.style.bottom = '80px';
-        emoji.style.animationDuration = (4 + Math.random() * 3) + 's';
-        emoji.style.animationDelay = (Math.random() * 2) + 's';
-        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.textContent = ['💖', '🌸', '✨'][Math.floor(Math.random() * 3)];
+        emoji.style.left = Math.random() * 90 + 'vw';
+        emoji.style.top = window.innerHeight + 20 + 'px';
+        emoji.style.animationDuration = (4 + Math.random() * 4) + 's';
+        emoji.style.animationDelay = (Math.random() * 3) + 's';
         document.body.appendChild(emoji);
-        setTimeout(() => emoji.remove(), 7000);
+        setTimeout(() => emoji.remove(), 9000);
       }
     }
   </script>
+
 </body>
 </html>
