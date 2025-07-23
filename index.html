@@ -206,9 +206,9 @@
     ⏳ Calculating time left...
   </div>
 
-  <button class="pit-stop-btn" onclick="toggleLoveNote()" aria-expanded="false" aria-controls="loveNote">
-    Pit Stop 💖
-  </button>
+  <!-- Remove onclick from HTML -->
+<button id="pitStopBtn" class="pit-stop-btn">Pit Stop 💖</button>
+
 
   <div class="love-note" id="loveNote" role="dialog" aria-modal="true" aria-labelledby="loveNoteTitle" aria-hidden="true">
     <button class="close-btn" onclick="toggleLoveNote()" aria-label="Close love letter">×</button>
@@ -219,6 +219,8 @@
   </div>
 
   <script>
+    document.getElementById('pitStopBtn').addEventListener('click', toggleLoveNote);
+
     const loveNote = document.getElementById('loveNote');
     const countdownEl = document.getElementById('countdown');
     const pitStopBtn = document.querySelector('.pit-stop-btn');
