@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -59,11 +59,10 @@
       border-radius: 50px;
       font-size: 16px;
       cursor: pointer;
-      z-index: 30;
+      z-index: 99;
       box-shadow: 0 0 15px #ff4d6dcc;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       user-select: none;
-      outline-offset: 2px;
       outline: none;
     }
     .pit-stop-btn:hover,
@@ -84,7 +83,7 @@
       padding: 28px 26px 34px 26px;
       border-radius: 22px;
       box-shadow: 0 14px 40px rgba(255, 102, 204, 0.95);
-      z-index: 40;
+      z-index: 60;
       font-size: 18px;
       line-height: 1.8;
       user-select: none;
@@ -95,7 +94,7 @@
       box-sizing: border-box;
     }
     .love-note.show {
-      bottom: 80px;
+      bottom: 100px;
       opacity: 1;
       transform: translateY(0);
     }
@@ -166,31 +165,39 @@
 
     @media screen and (max-width: 600px) {
       .love-note {
-        width: 95vw; /* almost full screen width */
+        width: 95vw;
         right: 2.5vw;
-        bottom: 70px;
-        font-size: 18px;       /* slightly bigger for readability */
-        line-height: 1.9;      /* better spacing */
-        padding: 28px 20px 34px 20px; /* less horizontal padding */
-        max-width: none;       /* remove max-width to fill width */
-        border-radius: 18px;   /* keep rounding */
+        bottom: 100px;
+        font-size: 18px;
+        line-height: 1.9;
+        padding: 28px 20px 34px 20px;
+        max-width: none;
+        border-radius: 18px;
+        z-index: 60;
       }
+
       .love-note.show {
-        bottom: 70px;
+        bottom: 100px !important;
       }
+
       .close-btn {
         top: 12px;
         right: 12px;
-        font-size: 32px;        /* bigger close icon */
-        padding: 6px 10px;      /* easier tap target */
+        font-size: 32px;
+        padding: 6px 10px;
       }
+
       .pit-stop-btn {
+        position: fixed;
         bottom: 20px;
-        top: auto;
+        top: auto !important;
         right: 20px;
-        padding: 14px 26px;    /* bigger button on mobile */
+        padding: 16px 28px;
         font-size: 18px;
+        z-index: 99;
+        pointer-events: auto;
       }
+
       .countdown {
         top: 20px;
         left: 20px;
@@ -206,9 +213,7 @@
     ⏳ Calculating time left...
   </div>
 
-  <!-- Remove onclick from HTML -->
-<button id="pitStopBtn" class="pit-stop-btn">Pit Stop 💖</button>
-
+  <button id="pitStopBtn" class="pit-stop-btn">Pit Stop 💖</button>
 
   <div class="love-note" id="loveNote" role="dialog" aria-modal="true" aria-labelledby="loveNoteTitle" aria-hidden="true">
     <button class="close-btn" onclick="toggleLoveNote()" aria-label="Close love letter">×</button>
@@ -219,12 +224,12 @@
   </div>
 
   <script>
-    document.getElementById('pitStopBtn').addEventListener('click', toggleLoveNote);
-
+    const pitStopBtn = document.getElementById('pitStopBtn');
     const loveNote = document.getElementById('loveNote');
-    const countdownEl = document.getElementById('countdown');
-    const pitStopBtn = document.querySelector('.pit-stop-btn');
     const loveNoteText = document.getElementById('loveNoteText');
+    const countdownEl = document.getElementById('countdown');
+
+    pitStopBtn.addEventListener('click', toggleLoveNote);
 
     function toggleLoveNote() {
       const isShown = loveNote.classList.toggle('show');
@@ -235,18 +240,17 @@
         createFloatingEmojis();
       } else {
         loveNoteText.textContent = "";
-        clearInterval(typingTimer); // stop typing if closed early
+        clearInterval(typingTimer);
       }
     }
 
-    // Typing effect for love note text
     const message = `I'm so proud of you, you are working so hard to achieve future goals. But it's unfair to struggle alone.
 I want to be there for you, to support you, to cheer you on. I know you can do this, and I will be right here, every step of the way.
 You are my favorite co-driver.
-I am here for you, cheering you on, ready to help in any way I can.
-
 You are perfect for me. 💖
-I love you so much, and I believe in you with all my heart.`;
+Sometimes you’re hard to control but that’s okay — I’ll handle it 😘
+I never saw you as a bad boyfriend. You try every day to be a better one.
+And I see it. Always.`;
 
     let typingIndex = 0;
     let typingTimer;
@@ -265,7 +269,7 @@ I love you so much, and I believe in you with all my heart.`;
       }, 40);
     }
 
-    // Countdown Timer to July 29 2025 00:00:00 UTC
+    // Countdown
     const targetDate = new Date("2025-07-29T00:00:00Z");
 
     function updateCountdown() {
@@ -289,7 +293,6 @@ I love you so much, and I believe in you with all my heart.`;
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Floating hearts animation for stress relief
     function createFloatingEmojis() {
       for (let i = 0; i < 12; i++) {
         const emoji = document.createElement('div');
@@ -304,6 +307,5 @@ I love you so much, and I believe in you with all my heart.`;
       }
     }
   </script>
-
 </body>
 </html>
